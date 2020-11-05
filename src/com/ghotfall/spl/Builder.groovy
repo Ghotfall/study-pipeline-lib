@@ -37,3 +37,5 @@ void test(Boolean junitArchive) {
         }
     }
 }
+
+return this
