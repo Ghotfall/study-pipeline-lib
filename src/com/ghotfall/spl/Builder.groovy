@@ -1,10 +1,12 @@
 package com.ghotfall.spl
 
-def simpleBuild(Boolean junitArchive = false) {
-    preBuild()
-    getRepo()
-    build()
-    test(junitArchive)
+def simpleBuild(String nodeLabel, Boolean junitArchive = false) {
+    node(nodeLabel) {
+        preBuild()
+        getRepo()
+        build()
+        test(junitArchive)
+    }
 }
 
 def preBuild() {
