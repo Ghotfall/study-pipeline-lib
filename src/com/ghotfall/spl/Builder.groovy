@@ -7,15 +7,16 @@ String nodeLabel
 
 def simpleBuild(String nodeLabel, Boolean junitArchive = false) {
     this.nodeLabel = nodeLabel
-
-    preBuild()
-    getRepo()
-    build()
-    test(junitArchive)
+    node(this.nodeLabel) {
+        preBuild()
+        getRepo()
+        build()
+        test(junitArchive)
+    }
 }
 
 def preBuild() {
-    node(nodeLabel) {
+//    node(nodeLabel) {
         stage('Pre Build') {
             echo 'Cleaning workspace:'
 //            if (fileExists('.git'))
@@ -23,29 +24,29 @@ def preBuild() {
 //            else
                 deleteDir()
         }
-    }
+//    }
 }
 
 def getRepo() {
-    node(nodeLabel) {
+//    node(nodeLabel) {
         stage('Checkout') {
             echo 'Checkout:'
             checkout scm
         }
-    }
+//    }
 }
 
 def build() {
-    node(nodeLabel) {
+//    node(nodeLabel) {
         stage('Build') {
             echo 'Build:'
             bat 'mvn -B -DskipTests clean package'
         }
-    }
+//    }
 }
 
 def test(Boolean junitArchive) {
-    node(nodeLabel) {
+//    node(nodeLabel) {
         stage('Test') {
             if (junitArchive) {
                 echo 'Test:'
@@ -55,7 +56,7 @@ def test(Boolean junitArchive) {
                 echo 'Tests were skipped!'
             }
         }
-    }
+//    }
 }
 
 return this
