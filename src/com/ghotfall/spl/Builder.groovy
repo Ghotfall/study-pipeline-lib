@@ -1,41 +1,57 @@
 package com.ghotfall.spl
 
+import groovy.transform.Field
+
+@Field
+String nodeLabel
+
 def simpleBuild(String nodeLabel, Boolean junitArchive = false) {
-    node(nodeLabel) {
-        preBuild()
-        getRepo()
-        build()
-        test(junitArchive)
-    }
+    this.nodeLabel = nodeLabel
+
+    preBuild()
+    getRepo()
+    build()
+    test(junitArchive)
 }
 
 def preBuild() {
-    stage('Pre Build') {
-        echo 'Cleaning workspace:'
-        git clean -xdf
+    node(nodeLabel) {
+        stage('Pre Build') {
+            echo 'Cleaning workspace:'
+            if (fileExists('.git'))
+                git clean -gdf
+            else
+                deleteDir()
+        }
     }
 }
 
 def getRepo() {
-    stage('Checkout') {
-        echo 'Checkout:'
-        checkout scm
+    node(nodeLabel) {
+        stage('Checkout') {
+            echo 'Checkout:'
+            checkout scm
+        }
     }
 }
 
 def build() {
-    stage('Build') {
-        echo 'Build:'
-        bat 'mvn -B -DskipTests clean package'
+    node(nodeLabel) {
+        stage('Build') {
+            echo 'Build:'
+            bat 'mvn -B -DskipTests clean package'
+        }
     }
 }
 
 def test(Boolean junitArchive) {
-    stage('Test') {
-        echo 'Test:'
-        bat 'mvn test'
-        if (junitArchive) {
-            junit 'target/surefire-reports/*.xml'
+    node(nodeLabel) {
+        stage('Test') {
+            echo 'Test:'
+            bat 'mvn test'
+            if (junitArchive) {
+                junit 'target/surefire-reports/*.xml'
+            }
         }
     }
 }
