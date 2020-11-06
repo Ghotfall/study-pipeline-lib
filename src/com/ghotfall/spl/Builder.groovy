@@ -47,10 +47,12 @@ def build() {
 def test(Boolean junitArchive) {
     node(nodeLabel) {
         stage('Test') {
-            echo 'Test:'
-            bat 'mvn test'
             if (junitArchive) {
+                echo 'Test:'
+                bat 'mvn test'
                 junit 'target/surefire-reports/*.xml'
+            } else {
+                echo 'Tests were skipped!'
             }
         }
     }
