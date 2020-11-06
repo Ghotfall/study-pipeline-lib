@@ -18,9 +18,9 @@ def preBuild() {
     node(nodeLabel) {
         stage('Pre Build') {
             echo 'Cleaning workspace:'
-            if (fileExists('.git'))
-                git clean -gdf
-            else
+//            if (fileExists('.git'))
+//                git clean -gdf
+//            else
                 deleteDir()
         }
     }
