@@ -12,7 +12,7 @@ def simpleBuild(String nodeLabel, Boolean junitArchive = false) {
 def preBuild() {
     stage('Pre Build') {
         echo 'Cleaning workspace:'
-        deleteDir
+        git clean -xdf
     }
 }
 
