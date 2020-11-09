@@ -1,13 +1,13 @@
 package com.ghotfall.spl.steps
 
-static void preBuild() {
+static def preBuild() {
     stage('Pre Build') {
         echo 'Cleaning workspace:'
         deleteDir()
     }
 }
 
-static void getRepo() {
+static def getRepo() {
     stage('Checkout') {
         echo 'Checkout:'
         checkout scm
