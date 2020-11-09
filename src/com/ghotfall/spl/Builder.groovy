@@ -1,62 +1,47 @@
 package com.ghotfall.spl
 
+import com.ghotfall.spl.steps.Common
+import com.ghotfall.spl.steps.Maven
 import groovy.transform.Field
 
 @Field
 String nodeLabel
 
-def simpleBuild(String nodeLabel, Boolean junitArchive = false) {
+def simpleBuild(String nodeLabel) {
     this.nodeLabel = nodeLabel
-    node(this.nodeLabel) {
-        preBuild()
-        getRepo()
-        build()
-        test(junitArchive)
+    echo 'Started new build'
+
+    def branch = env.BRANCH_NAME
+    assert branch != null: "Branch data not found"
+
+    switch (branch) {
+        case 'master':
+            echo 'Building "master" branch...'
+            bMaster()
+            break
+
+        default:
+            echo "Building \"$branch\" branch..."
+            bFeature()
+            break
     }
 }
 
-def preBuild() {
-//    node(nodeLabel) {
-        stage('Pre Build') {
-            echo 'Cleaning workspace:'
-//            if (fileExists('.git'))
-//                git clean -gdf
-//            else
-                deleteDir()
-        }
-//    }
+def bMaster() {
+    node(this.nodeLabel) {
+        Common.preBuild()
+        Common.getRepo()
+        Maven.build()
+        Maven.test(true)
+    }
 }
 
-def getRepo() {
-//    node(nodeLabel) {
-        stage('Checkout') {
-            echo 'Checkout:'
-            checkout scm
-        }
-//    }
-}
-
-def build() {
-//    node(nodeLabel) {
-        stage('Build') {
-            echo 'Build:'
-            bat 'mvn -B -DskipTests clean package'
-        }
-//    }
-}
-
-def test(Boolean junitArchive) {
-//    node(nodeLabel) {
-        stage('Test') {
-            if (junitArchive) {
-                echo 'Test:'
-                bat 'mvn test'
-                junit 'target/surefire-reports/*.xml'
-            } else {
-                echo 'Tests were skipped!'
-            }
-        }
-//    }
+def bFeature() {
+    node(this.nodeLabel) {
+        Common.preBuild()
+        Common.getRepo()
+        Maven.build()
+    }
 }
 
 return this
