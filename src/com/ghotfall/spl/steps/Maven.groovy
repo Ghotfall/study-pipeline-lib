@@ -1,13 +1,13 @@
 package com.ghotfall.spl.steps
 
-static def build() {
+def build() {
     stage('Build') {
         echo 'Build:'
         bat 'mvn -B -DskipTests clean package'
     }
 }
 
-static def test(Boolean junitArchive = false) {
+def test(Boolean junitArchive = false) {
     stage('Test') {
         if (junitArchive) {
             echo 'Test:'
