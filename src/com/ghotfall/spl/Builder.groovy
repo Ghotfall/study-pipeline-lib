@@ -7,8 +7,15 @@ import groovy.transform.Field
 @Field
 String nodeLabel
 
-def simpleBuild(String nodeLabel) {
+@Field
+def steps
+
+def simpleBuild(String nodeLabel, steps) {
+    this.steps = steps
     this.nodeLabel = nodeLabel
+
+    Common.steps = this.steps
+
     echo 'Started new build'
 
     def branch = env.BRANCH_NAME
@@ -31,22 +38,20 @@ def simpleBuild(String nodeLabel) {
 }
 
 def bMaster() {
-    def stepsCommon = new Common()
     def stepsMaven = new Maven()
     node(this.nodeLabel) {
-        stepsCommon.preBuild()
-        stepsCommon.getRepo()
+        Common.preBuild()
+        Common.getRepo()
         stepsMaven.build()
         stepsMaven.test(true)
     }
 }
 
 def bFeature() {
-    def stepsCommon = new Common()
     def stepsMaven = new Maven()
     node(this.nodeLabel) {
-        stepsCommon.preBuild()
-        stepsCommon.getRepo()
+        Common.preBuild()
+        Common.getRepo()
         stepsMaven.build()
     }
 }

@@ -3,10 +3,6 @@ package com.ghotfall.spl.steps
 class Common {
     static def steps
 
-    Common(steps) {
-        this.steps = steps
-    }
-
     static void preBuild() {
         steps.stage('Pre Build') {
             steps.echo 'Cleaning workspace:'
