@@ -11,10 +11,11 @@ def simpleBuild(String nodeLabel) {
     this.nodeLabel = nodeLabel
     echo 'Started new build'
 
-    def branch = env.BRANCH_NAME
-    assert branch != null: "Branch data not found"
+    switch (env.BRANCH_NAME) {
+        case null:
+            throw new IllegalArgumentException("Can't define repository branch")
+            break
 
-    switch (branch) {
         case 'master':
             echo 'Building "master" branch...'
             bMaster()
