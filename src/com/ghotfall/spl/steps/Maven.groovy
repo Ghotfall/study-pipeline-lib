@@ -24,12 +24,14 @@ def updateVersion() {
         echo('Increasing project version...')
 
         def pom = readMavenPom file: 'pom.xml'
+        echo "Current version is ${pom.getVersion()}"
         String[] version = pom.getVersion().split('.')
         try {
             int minorVersion = Integer.parseInt(version[1])
             version[1] = ++minorVersion
             pom.setVersion(version.join('.'))
             writeMavenPom model: pom
+            echo "New version is ${pom.getVersion()}"
 
             echo 'Writing changes to repository'
             git status
