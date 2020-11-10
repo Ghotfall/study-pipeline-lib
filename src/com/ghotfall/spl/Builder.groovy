@@ -11,7 +11,9 @@ def simpleBuild(String nodeLabel) {
     this.nodeLabel = nodeLabel
     echo 'Started new build'
 
-    switch (env.BRANCH_NAME) {
+    def branch = env.BRANCH_NAME
+
+    switch (branch) {
         case null:
             throw new IllegalArgumentException("Can't define repository branch")
             break
