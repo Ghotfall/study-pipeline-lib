@@ -25,11 +25,10 @@ def updateVersion() {
 
         def pom = readMavenPom file: 'pom.xml'
         echo "Current version is ${pom.getVersion()}"
-        String[] version = pom.getVersion().split('.')
-        try {
-            int minorVersion = Integer.parseInt(version[1])
-            version[1] = ++minorVersion
-            pom.setVersion(version.join('.'))
+//        try {
+            def (major, minor, patch) = pom.getVersion().tokenize('.')
+            minor++
+            pom.setVersion("${major}.${minor}.${patch}")
             writeMavenPom model: pom
             echo "New version is ${pom.getVersion()}"
 
@@ -38,9 +37,9 @@ def updateVersion() {
             git add 'pom.xml'
             git commit -m "Jenkins CI - Project version increment"
             git push origin
-        } catch(NumberFormatException ignored) {
-            echo 'Unknown version format, skipping version increment'
-        }
+//        } catch(Exception ignored) {
+//            echo 'Unknown version format, skipping version increment'
+//        }
     }
 }
 
