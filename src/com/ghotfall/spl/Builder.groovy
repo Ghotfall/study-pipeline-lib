@@ -31,20 +31,22 @@ def simpleBuild(String nodeLabel) {
 }
 
 def bMaster() {
+    def stepsCommon = new Common()
     def stepsMaven = new Maven()
     node(this.nodeLabel) {
-        Common.preBuild()
-        Common.getRepo()
+        stepsCommon.preBuild()
+        stepsCommon.getRepo()
         stepsMaven.build()
         stepsMaven.test(true)
     }
 }
 
 def bFeature() {
+    def stepsCommon = new Common()
     def stepsMaven = new Maven()
     node(this.nodeLabel) {
-        Common.preBuild()
-        Common.getRepo()
+        stepsCommon.preBuild()
+        stepsCommon.getRepo()
         stepsMaven.build()
     }
 }
