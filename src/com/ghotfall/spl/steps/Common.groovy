@@ -10,7 +10,8 @@ def preBuild() {
 def getRepo() {
     stage('Checkout') {
         echo 'Checkout:'
-        checkout scm
+//        checkout scm
+        checkout([$class: 'GitSCM', extensions: [[$class: 'LocalBranch', localBranch: "**"]]])
     }
 }
 
