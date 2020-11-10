@@ -46,7 +46,7 @@ private def writePOMToRepo(String version) {
 git status
 git add pom.xml
 git commit -m "Jenkins CI - New version: ${version}"
-git push origin
+git push --set-upstream origin master
 """
 }
 
