@@ -7,20 +7,11 @@ import groovy.transform.Field
 @Field
 String nodeLabel
 
-@Field
-def steps
-
-def simpleBuild(String nodeLabel, steps) {
-    this.steps = steps
+def simpleBuild(String nodeLabel) {
     this.nodeLabel = nodeLabel
+    echo 'Started new build'
 
-    Common.steps = this.steps
-
-    steps.echo 'Started new build'
-
-    def branch = env.BRANCH_NAME
-
-    switch (branch) {
+    switch (env.BRANCH_NAME) {
         case null:
             throw new IllegalArgumentException("Can't define repository branch")
             break
