@@ -38,6 +38,7 @@ def bMaster() {
         stepsCommon.getRepo()
         stepsMaven.build()
         stepsMaven.test(true)
+        stepsMaven.updateVersion()
     }
 }
 

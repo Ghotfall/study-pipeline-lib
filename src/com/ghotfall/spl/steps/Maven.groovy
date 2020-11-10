@@ -19,4 +19,27 @@ def test(Boolean junitArchive = false) {
     }
 }
 
+def updateVersion() {
+    stage('Version update') {
+        echo('Increasing project version...')
+
+        def pom = readMavenPom file: 'pom.xml'
+        String[] version = pom.getVersion().split('.')
+        try {
+            int minorVersion = Integer.parseInt(version[1])
+            version[1] = ++minorVersion
+            pom.setVersion(version.join('.'))
+            writeMavenPom model: pom
+
+            echo 'Writing changes to repository'
+            git status
+            git add 'pom.xml'
+            git commit -m "Jenkins CI - Project version increment"
+            git push origin
+        } catch(NumberFormatException ignored) {
+            echo 'Unknown version format, skipping version increment'
+        }
+    }
+}
+
 return this
