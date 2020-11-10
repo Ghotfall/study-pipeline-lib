@@ -1,17 +1,23 @@
 package com.ghotfall.spl.steps
 
-def preBuild() {
-    stage('Pre Build') {
-        echo 'Cleaning workspace:'
-        deleteDir()
+class Common {
+    static def steps
+
+    Common(steps) {
+        this.steps = steps
+    }
+
+    static void preBuild() {
+        steps.stage('Pre Build') {
+            steps.echo 'Cleaning workspace:'
+            steps.deleteDir()
+        }
+    }
+
+    static void getRepo() {
+        steps.stage('Checkout') {
+            steps.echo 'Checkout:'
+            steps.checkout scm
+        }
     }
 }
-
-def getRepo() {
-    stage('Checkout') {
-        echo 'Checkout:'
-        checkout scm
-    }
-}
-
-return this
