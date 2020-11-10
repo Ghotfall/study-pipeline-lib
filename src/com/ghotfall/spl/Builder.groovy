@@ -16,7 +16,7 @@ def simpleBuild(String nodeLabel, steps) {
 
     Common.steps = this.steps
 
-    echo 'Started new build'
+    steps.echo 'Started new build'
 
     def branch = env.BRANCH_NAME
 
