@@ -36,9 +36,9 @@ def bMaster() {
     node(this.nodeLabel) {
         stepsCommon.preBuild()
         stepsCommon.getRepo()
+        stepsMaven.updateVersion()
         stepsMaven.build()
         stepsMaven.test(true)
-        stepsMaven.updateVersion()
     }
 }
 
