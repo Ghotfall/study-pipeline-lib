@@ -33,7 +33,7 @@ def simpleBuild(String nodeLabel) {
 def dockerAdvancedBuild(String nodeLabel, String image, Closure body) {
     this.nodeLabel = nodeLabel
     node(this.nodeLabel) {
-        docker.image(image).inside {
+        docker.image(image).withRun{c->
             body()
         }
     }
