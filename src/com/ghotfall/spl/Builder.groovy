@@ -30,6 +30,14 @@ def simpleBuild(String nodeLabel) {
     }
 }
 
+def dockerAdvancedBuild(String nodeLabel, String image, Closure body) {
+    node(this.nodeLabel) {
+        docker.image(image).inside {
+            body()
+        }
+    }
+}
+
 def bMaster() {
     def stepsCommon = new Common()
     def stepsMaven = new Maven()
