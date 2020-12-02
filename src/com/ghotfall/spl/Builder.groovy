@@ -1,5 +1,6 @@
 package com.ghotfall.spl
 
+import com.ghotfall.spl.steps.Choco
 import com.ghotfall.spl.steps.Common
 import com.ghotfall.spl.steps.Maven
 import groovy.transform.Field
@@ -30,12 +31,18 @@ def simpleBuild(String nodeLabel) {
     }
 }
 
-def dockerAdvancedBuild(String nodeLabel, String image, Closure body) {
+def buildChoco(String nodelabel) {
     this.nodeLabel = nodeLabel
+    echo 'Started new build'
+
+    def stepsCommon = new Common()
+    def stepsMaven = new Maven()
+    def stepsChoco = new Choco()
     node(this.nodeLabel) {
-        docker.image(image).withRun{c->
-            body()
-        }
+        stepsCommon.preBuild()
+        stepsCommon.getRepo()
+        stepsMaven.build()
+        stepsChoco.newPackage(stepsMaven.getInfo())
     }
 }
 

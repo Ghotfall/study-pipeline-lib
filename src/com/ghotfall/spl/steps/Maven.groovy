@@ -7,6 +7,17 @@ def build() {
     }
 }
 
+def getInfo() {
+    def pom = readMavenPom file: 'pom.xml'
+
+    def data = [:]
+    data['id'] = pom.getArtifactId()
+    data['group'] = pom.getGroupId()
+    data['version'] = pom.getVersion()
+
+    return data
+}
+
 def test(Boolean junitArchive = false) {
     stage('Test') {
         if (junitArchive) {
