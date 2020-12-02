@@ -6,7 +6,7 @@ def newPackage(map) {
         bat "copy .\\target\\${map['id']}-${map['version']}-shaded.jar .\\${map['id']}\\tools\\${map['id']}.jar"
         dir(map['id']) {
             bat 'choco pack'
-            bat "choco install ${map['id']} -s ."
+            bat "choco install ${map['id']} -s . -y"
         }
     }
 }
