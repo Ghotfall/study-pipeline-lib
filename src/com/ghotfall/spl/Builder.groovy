@@ -8,7 +8,7 @@ import groovy.transform.Field
 @Field
 String nodeLabel
 
-def simpleBuild(String nodeLabel, boolean deploy = false) {
+def simpleBuild(String nodeLabel, boolean deploy = false, boolean  test = false) {
     this.nodeLabel = nodeLabel
     echo 'Started new build'
 
@@ -21,7 +21,7 @@ def simpleBuild(String nodeLabel, boolean deploy = false) {
 
         case 'master':
             echo 'Building "master" branch...'
-            bMaster(deploy)
+            bMaster(deploy, test)
             break
 
         default:
@@ -32,7 +32,7 @@ def simpleBuild(String nodeLabel, boolean deploy = false) {
 }
 
 
-def bMaster(boolean deploy = false) {
+def bMaster(boolean deploy = false, boolean test = false) {
     def stepsCommon = new Common()
     def stepsMaven = new Maven()
     def stepsChoco = new Choco()
@@ -41,7 +41,7 @@ def bMaster(boolean deploy = false) {
         stepsCommon.getRepo()
         stepsMaven.updateVersion()
         stepsMaven.build()
-        stepsMaven.test(true)
+        stepsMaven.test(test)
 
         pomData = stepsMaven.getInfo()
         stepsChoco.pack(pomData)
